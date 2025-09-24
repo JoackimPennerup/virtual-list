@@ -44,6 +44,7 @@ export class VirtualListElement extends HTMLElement {
   #scrollPaddingStart = 0;
   #scrollPaddingEnd = 0;
   #rafId: number | null = null;
+  #capturedElements = new Set<HTMLElement>();
 
   constructor() {
     super();
@@ -163,6 +164,7 @@ export class VirtualListElement extends HTMLElement {
 
   #handleLightDomMutations(mutations: MutationRecord[]): void {
     const additions: HTMLElement[] = [];
+    const removals: HTMLElement[] = [];
     let changed = false;
 
     for (const mutation of mutations) {
@@ -176,12 +178,7 @@ export class VirtualListElement extends HTMLElement {
 
       mutation.removedNodes.forEach((node) => {
         if (node.nodeType === Node.ELEMENT_NODE) {
-          const element = node as HTMLElement;
-          const index = this.#items.indexOf(element);
-          if (index !== -1) {
-            this.#items.splice(index, 1);
-            changed = true;
-          }
+          removals.push(node as HTMLElement);
         }
       });
     }
@@ -192,11 +189,30 @@ export class VirtualListElement extends HTMLElement {
           element.setAttribute('role', 'listitem');
         }
         if (element.parentNode === this) {
-          this.removeChild(element);
+          this.#capturedElements.add(element);
+          element.remove();
         }
         this.#items.push(element);
       }
       changed = true;
+    }
+
+    if (removals.length > 0) {
+      const additionSet = new Set(additions);
+      for (const element of removals) {
+        if (additionSet.has(element)) {
+          continue;
+        }
+        if (this.#capturedElements.has(element)) {
+          this.#capturedElements.delete(element);
+          continue;
+        }
+        const index = this.#items.indexOf(element);
+        if (index !== -1) {
+          this.#items.splice(index, 1);
+          changed = true;
+        }
+      }
     }
 
     if (changed) {
@@ -454,5 +470,21 @@ export class VirtualListElement extends HTMLElement {
     } else {
       queueMicrotask(measure);
     }
+  }
+
+  override removeChild<T extends Node>(child: T): T {
+    if (child instanceof HTMLElement) {
+      const index = this.#items.indexOf(child);
+      if (index !== -1) {
+        if (child.parentNode) {
+          child.parentNode.removeChild(child);
+        }
+        this.#items.splice(index, 1);
+        this.#updateVirtualizerOptions();
+        return child;
+      }
+    }
+
+    return super.removeChild(child);
   }
 }

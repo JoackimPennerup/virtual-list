@@ -18,7 +18,7 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "lint": "tsc --noEmit",
-    "test": "npm run build"
+    "test": "vitest"
   },
   "keywords": [
     "web-components",
@@ -34,7 +34,10 @@
     "@tanstack/virtual-core": "^3.13.12"
   },
   "devDependencies": {
+    "@types/jsdom": "^21.1.7",
+    "jsdom": "^25.0.1",
     "tsup": "^8.5.0",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.2",
+    "vitest": "^2.1.4"
   }
 }
