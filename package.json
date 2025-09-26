@@ -16,7 +16,10 @@
   },
   "scripts": {
     "build": "tsup",
-    "dev": "tsup --watch",
+    "build:examples": "vite build",
+    "dev": "vite",
+    "dev:lib": "tsup --watch",
+    "preview": "vite preview",
     "lint": "tsc --noEmit",
     "test": "vitest"
   },
@@ -38,6 +41,7 @@
     "jsdom": "^25.0.1",
     "tsup": "^8.5.0",
     "typescript": "^5.9.2",
+    "vite": "^5.4.11",
     "vitest": "^2.1.4"
   }
 }

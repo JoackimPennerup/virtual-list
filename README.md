@@ -65,7 +65,13 @@ Appending new child elements directly to `<virtual-list>` will move them into th
 
 ## Examples
 
-Run `npm run build` and open [`examples/basic.html`](./examples/basic.html) in a local server to see 100 directory rows virtualized inside a 20&nbsp;rem tall list.
+Start a local playground with Vite to experiment with the component and the directory demo:
+
+```bash
+npm run dev
+```
+
+The dev server opens [`examples/basic.html`](./examples/basic.html) and bundles imports so `@tanstack/virtual-core` resolves automatically while you tweak the example or source code. To generate a static build of the demo, run `npm run build:examples` and serve the contents of `dist-examples/`.
 
 ## License
 

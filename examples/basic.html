@@ -80,8 +80,17 @@
       <virtual-list id="directory" overscan="4"></virtual-list>
     </main>
 
+    <script type="importmap">
+      {
+        "imports": {
+          "virtual-list": "../dist/index.js",
+          "@tanstack/virtual-core": "../node_modules/@tanstack/virtual-core/build/virtual-core.esm.js"
+        }
+      }
+    </script>
+
     <script type="module">
-      import '../dist/index.js';
+      import 'virtual-list';
 
       const list = document.getElementById('directory');
 
