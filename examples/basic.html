@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Virtual List Example</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        font-family: system-ui, sans-serif;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background: color-mix(in srgb, Canvas 90%, AccentColor 10%);
+      }
+
+      .demo {
+        width: min(32rem, 90vw);
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        padding: 2rem;
+        border-radius: 1rem;
+        background: color-mix(in srgb, Canvas 96%, AccentColor 4%);
+        box-shadow: 0 1.5rem 3rem -1.5rem rgb(0 0 0 / 0.25);
+      }
+
+      virtual-list::part(scroll) {
+        height: 20rem;
+        border-radius: 0.75rem;
+        border: 1px solid color-mix(in srgb, currentColor 12%, transparent);
+        background: color-mix(in srgb, Canvas 80%, AccentColor 20%);
+      }
+
+      virtual-list::part(items) > * {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid color-mix(in srgb, currentColor 10%, transparent);
+        background: color-mix(in srgb, Canvas 92%, AccentColor 8%);
+      }
+
+      virtual-list::part(items) > *:last-child {
+        border-bottom-color: transparent;
+      }
+
+      .avatar {
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 999px;
+        display: grid;
+        place-items: center;
+        font-weight: 600;
+        background: color-mix(in srgb, AccentColor 75%, Canvas 25%);
+        color: Canvas;
+      }
+
+      .name {
+        font-size: 1.1rem;
+        font-weight: 600;
+      }
+
+      .details {
+        color: color-mix(in srgb, currentColor 70%, transparent);
+        font-size: 0.9rem;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="demo">
+      <header>
+        <h1>Virtualized directory</h1>
+        <p>Scroll the list below to see 100 items rendered inside a 20&nbsp;rem viewport.</p>
+      </header>
+      <virtual-list id="directory" overscan="4"></virtual-list>
+    </main>
+
+    <script type="module">
+      import '../dist/index.js';
+
+      const list = document.getElementById('directory');
+
+      const users = Array.from({ length: 100 }, (_, index) => {
+        const id = index + 1;
+        return {
+          id,
+          name: `Person ${id.toString().padStart(3, '0')}`,
+          email: `person${id}@example.com`,
+        };
+      });
+
+      for (const user of users) {
+        const row = document.createElement('div');
+        row.dataset.estimateSize = '60';
+
+        const avatar = document.createElement('span');
+        avatar.className = 'avatar';
+        avatar.textContent = user.name.slice(0, 2).toUpperCase();
+
+        const details = document.createElement('div');
+
+        const name = document.createElement('div');
+        name.className = 'name';
+        name.textContent = user.name;
+
+        const email = document.createElement('div');
+        email.className = 'details';
+        email.textContent = user.email;
+
+        details.append(name, email);
+        row.append(avatar, details);
+        list.append(row);
+      }
+    </script>
+  </body>
+</html>

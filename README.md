@@ -63,6 +63,10 @@ virtual-list::part(items) > * {
 
 Appending new child elements directly to `<virtual-list>` will move them into the virtualized pool automatically. Removing an item via DOM APIs updates the virtualizer and aria metadata on the next frame.
 
+## Examples
+
+Run `npm run build` and open [`examples/basic.html`](./examples/basic.html) in a local server to see 100 directory rows virtualized inside a 20&nbsp;rem tall list.
+
 ## License
 
 [MIT](./LICENSE)
