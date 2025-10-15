@@ -1,0 +1,47 @@
+{
+  "name": "virtual-list",
+  "version": "1.0.0",
+  "description": "An a11y friendly web component for virtualized lists, built on top of TanStack Virtual",
+  "type": "module",
+  "source": "src/index.ts",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "scripts": {
+    "build": "tsup",
+    "build:examples": "vite build",
+    "dev": "vite",
+    "dev:lib": "tsup --watch",
+    "preview": "vite preview",
+    "lint": "tsc --noEmit",
+    "test": "vitest"
+  },
+  "keywords": [
+    "web-components",
+    "virtualization",
+    "tanstack"
+  ],
+  "author": "",
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@tanstack/virtual-core": "^3.13.12"
+  },
+  "devDependencies": {
+    "@types/jsdom": "^21.1.7",
+    "jsdom": "^25.0.1",
+    "tsup": "^8.5.0",
+    "typescript": "^5.9.2",
+    "vite": "^5.4.11",
+    "vitest": "^2.1.4"
+  }
+}
